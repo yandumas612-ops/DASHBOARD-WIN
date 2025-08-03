@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Day Trade WIN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #005f73;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+    th {
+      background-color: #005f73;
+      color: #fff;
+    }
+    .alta {
+      color: green;
+      font-weight: bold;
+    }
+    .baixa {
+      color: red;
+      font-weight: bold;
+    }
+    .sentimento {
+      padding: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      background-color: #e0f7fa;
+      text-align: center;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Dashboard Day Trade - Mini Índice (WIN)</h1>
+
+<div class="sentimento" id="sentimento">Carregando sentimento de mercado...</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Indicador</th>
+      <th>Valor Atual</th>
+      <th>Variação</th>
+      <th>Sentimento</th>
+    </tr>
+  </thead>
+  <tbody id="tabela-indicadores">
+    <!-- Dados serão inseridos aqui -->
+  </tbody>
+</table>
+
+<script>
+// Dados mockados para demonstração – você pode substituir por uma chamada a API real do RapidAPI ou Google Sheets com Apps Script
+const dados = [
+  { nome: "S&P 500 Futuro", valor: 4515, variacao: 0.45 },
+  { nome: "Nasdaq Futuro", valor: 15500, variacao: 0.60 },
+  { nome: "DXY (Dollar Index)", valor: 102.3, variacao: -0.25 },
+  { nome: "VIX", valor: 14.5, variacao: -3.0 },
+  { nome: "Brent (Petróleo)", valor: 88.70, variacao: 1.1 },
+  { nome: "Minério de Ferro", valor: 117.2, variacao: 1.8 },
+  { nome: "Dólar Futuro", valor: 5.24, variacao: -0.30 },
+  { nome: "IBOVESPA", valor: 127500, variacao: 0.65 }
+];
+
+function carregarIndicadores() {
+  const corpo = document.getElementById("tabela-indicadores");
+  let positivos = 0, negativos = 0;
+
+  dados.forEach(item => {
+    const tr = document.createElement("tr");
+    const sentimento = item.variacao >= 0 ? "🟢 Alta" : "🔴 Baixa";
+    if (item.variacao >= 0) positivos++; else negativos++;
+
+    tr.innerHTML = `
+      <td>${item.nome}</td>
+      <td>${item.valor}</td>
+      <td class="${item.variacao >= 0 ? 'alta' : 'baixa'}">${item.variacao}%</td>
+      <td>${sentimento}</td>
+    `;
+    corpo.appendChild(tr);
+  });
+
+  const sentimentoFinal = document.getElementById("sentimento");
+  sentimentoFinal.innerText = positivos > negativos ? "Cenário de Alta Provável (Risk-On)" : "Cenário de Baixa Provável (Risk-Off)";
+  sentimentoFinal.style.backgroundColor = positivos > negativos ? "#c8e6c9" : "#ffcdd2";
+}
+
+carregarIndicadores();
+</script>
+
+</body>
+</html>
